@@ -1,0 +1,28 @@
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css",
+      "wwwroot/lib/bootstrap/bootstrap.css",
+      "wwwroot/lib/leaflet/leaflet.css",
+      "wwwroot/lib/bootstrap/bootstrap-grid.css",
+      "wwwroot/lib/bootstrap/bootstrap-reboot"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js",
+      "wwwroot/lib/leaflet/leaflet.js",
+      "wwwroot/lib/jquery/jquery.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

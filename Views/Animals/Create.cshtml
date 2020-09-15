@@ -1,0 +1,86 @@
+﻿<head>
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <script src="~/js/site.min.js"></script>
+    <meta charset="utf-8" />
+</head>
+@using Microsoft.AspNetCore.Mvc.Localization
+@model AnimalsOnMap.Data.Classes.Animal
+
+@{
+    ViewData["Title"] = "Create";
+}
+<body>
+    <h4>Create new animal</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="LocalName" class="control-label"></label>
+                    <input asp-for="LocalName" class="form-control" />
+                    <span asp-validation-for="LocalName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LatinName" class="control-label"></label>
+                    <input asp-for="LatinName" class="form-control" />
+                    <span asp-validation-for="LatinName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Longitude" class="control-label"></label>
+                    <input asp-for="Longitude" class="form-control" id="Longitude" asp-is-invariant="true"/>
+                    <span asp-validation-for="Longitude" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Latituda" class="control-label"></label>
+                    <input asp-for="Latituda" class="form-control" id="Latitude" asp-is-invariant="true"/>
+                    <span asp-validation-for="Latituda" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AnimalSpecies" class="control-label"></label>
+                    @*<select asp-for="AnimalSpecies" class="form-control"></select>*@
+                    <select asp-for="AnimalSpecies" asp-items="Html.GetEnumSelectList<AnimalsOnMap.Data.Classes.AnimalSpecies>()">
+                        <option selected="selected" value="">Please select</option>
+                    </select>
+                    <span asp-validation-for="AnimalSpecies" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+        <div class="col-6">
+            <div id="leafLetMapEditor">
+                <script>
+                    var map = L.map('leafLetMapEditor').setView([45.815399, 15.966568], 10);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    var mapMarker = null;
+
+                    map.on("click", function (e) {
+                        if (mapMarker == null)
+                            mapMarker = new L.Marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                        else
+                            mapMarker.setLatLng([e.latlng.lat, e.latlng.lng]).update();
+                        document.getElementById('Latitude').value = e.latlng.lat.toFixed(6);
+                        document.getElementById('Longitude').value = e.latlng.lng.toFixed(6);
+
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</body>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
