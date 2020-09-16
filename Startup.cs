@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AnimalsOnMap.Data;
+using AnimalsOnMap.Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,7 @@ namespace AnimalsOnMap
         {
             services.AddControllersWithViews();
             services.AddDbContext<AnimalsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-           
-
+            services.AddScoped<IAnimalManager, AnimalManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,23 +9,27 @@ using AnimalsOnMap.Data;
 using AnimalsOnMap.Data.Classes;
 using System.Threading;
 using System.Globalization;
+using AnimalsOnMap.Data.Interfaces;
 
 namespace AnimalsOnMap.Controllers
 {
     public class AnimalsController : Controller
     {
         private readonly AnimalsContext _context;
+        private IAnimalManager _manager;
 
-        public AnimalsController(AnimalsContext context)
+        public AnimalsController(AnimalsContext context, IAnimalManager manager)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            _manager = manager;
             _context = context;
         }
 
         // GET: Animals
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Animals.ToListAsync());
+            //return View(await _context.Animals.ToListAsync());
+            return View(_manager.GetAllAnimals());
         }
 
         // GET: Animals/Details/5
