@@ -10,38 +10,36 @@ using AnimalsOnMap.Data.Classes;
 using System.Threading;
 using System.Globalization;
 using AnimalsOnMap.Data.Interfaces;
+using NUglify.JavaScript.Syntax;
 
 namespace AnimalsOnMap.Controllers
 {
     public class AnimalsController : Controller
-    {
-        private readonly AnimalsContext _context;
+    {        
         private readonly IAnimalManager _manager;
 
         public AnimalsController(AnimalsContext context, IAnimalManager manager)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            _manager = manager;
-            _context = context;
+            _manager = manager;            
         }
 
         // GET: Animals
-        public async Task<IActionResult> Index()
-        {
-            //return View(await _context.Animals.ToListAsync());
+        public IActionResult Index()
+        {            
             return View(_manager.GetAllAnimals());
         }
 
         // GET: Animals/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animals
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var animal = _manager.GetAnimalDetails(id);
+
             if (animal == null)
             {
                 return NotFound();
@@ -61,26 +59,25 @@ namespace AnimalsOnMap.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LocalName,LatinName,AnimalSpecies,Longitude,Latituda")] Animal animal)
+        public IActionResult Create([Bind("Id,LocalName,LatinName,AnimalSpecies,Longitude,Latituda")] Animal animal)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(animal);
-                await _context.SaveChangesAsync();
+                _manager.AddNewAnimal(animal);
                 return RedirectToAction(nameof(Index));
             }
             return View(animal);
         }
 
         // GET: Animals/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animals.FindAsync(id);
+            var animal = _manager.GetAnimalDetails(id);
             if (animal == null)
             {
                 return NotFound();
@@ -93,7 +90,7 @@ namespace AnimalsOnMap.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,LocalName,LatinName,AnimalSpecies,Longitude,Latituda")] Animal animal)
+        public IActionResult Edit(int id, [Bind("Id,LocalName,LatinName,AnimalSpecies,Longitude,Latituda")] Animal animal)
         {
             if (id != animal.Id)
             {
@@ -102,37 +99,21 @@ namespace AnimalsOnMap.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(animal);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AnimalExists(animal.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _manager.UpdateAnimal(animal);
                 return RedirectToAction(nameof(Index));
             }
             return View(animal);
         }
 
         // GET: Animals/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var animal = await _context.Animals
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var animal = _manager.GetAnimalDetails(id);
             if (animal == null)
             {
                 return NotFound();
@@ -144,17 +125,15 @@ namespace AnimalsOnMap.Controllers
         // POST: Animals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var animal = await _context.Animals.FindAsync(id);
-            _context.Animals.Remove(animal);
-            await _context.SaveChangesAsync();
+            _manager.DeleteAnimal(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool AnimalExists(int id)
         {
-            return _context.Animals.Any(e => e.Id == id);
+            return _manager.AnimalExists(id);
         }
     }
 }

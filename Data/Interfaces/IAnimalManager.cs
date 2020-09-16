@@ -8,6 +8,11 @@ namespace AnimalsOnMap.Data.Interfaces
 {
     public interface IAnimalManager
     {
-        public List<Animal> GetAllAnimals();
+        List<Animal> GetAllAnimals();
+        Animal GetAnimalDetails(int? id);
+        void AddNewAnimal(Animal newAnimal);
+        bool AnimalExists(int id);
+        public void DeleteAnimal(int id);
+        public void UpdateAnimal(Animal animal);
     }
 }

@@ -43,6 +43,7 @@
 </script>
 
 <div class="leafLetMapMenu">
+    <h6>Found Animals</h6>
     @if (Model == null || Model.Count == 0)
     {
         <span> No animals to show :( Go find some...</span>
@@ -60,7 +61,7 @@
 	        {
 <script>
     var tmpMarker = L.marker([@animal.Latituda ,@animal.Longitude])
-        .bindPopup("@animal.AnimalSpecies <br/ @animal.LocalName <br/" + " width=300 height=300> ", { closeOnClick: false, autoClose: false, maxWidth: "auto" });
+        .bindPopup("@animal.AnimalSpecies <br> @animal.LocalName <br> @animal.LatinName" , { closeOnClick: false, autoClose: false, maxWidth: "auto" });
         firstAnimalMarkers.push(
             {
                 type: "@item",
@@ -85,8 +86,6 @@
             setFirstAnimalLayerByVisibility();
         }
     });
-
-
 </script> 
 	        }
         }

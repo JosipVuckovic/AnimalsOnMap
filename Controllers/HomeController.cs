@@ -27,9 +27,8 @@ namespace AnimalsOnMap.Controllers
         }
 
         public IActionResult Index()
-        {
-            var grpByPec = _manager.GetAllAnimals();
-            return View(grpByPec);
+        {            
+            return View(_manager.GetAllAnimals());
         }      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
