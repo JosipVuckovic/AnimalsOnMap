@@ -60,7 +60,7 @@
 	        {
 <script>
     var tmpMarker = L.marker([@animal.Latituda ,@animal.Longitude])
-        .bindPopup("@animal.AnimalSpecies @animal.LocalName <br/" + " width=300 height=300> ", { closeOnClick: false, autoClose: false, maxWidth: "auto" });
+        .bindPopup("@animal.AnimalSpecies <br/ @animal.LocalName <br/" + " width=300 height=300> ", { closeOnClick: false, autoClose: false, maxWidth: "auto" });
         firstAnimalMarkers.push(
             {
                 type: "@item",
