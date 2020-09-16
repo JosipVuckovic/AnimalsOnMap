@@ -1,22 +1,107 @@
-﻿<html>
-<head>
+﻿
+@*<head>
     <link rel="stylesheet" href="~/css/site.min.css" />
     <script src="~/js/site.min.js"></script>
-</head>
+</head>*@
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model List<AnimalsOnMap.Data.Classes.Animal>
 @{
     ViewData["Title"] = "Home Page";
 }
-<body>
+<div id="leafLetMap"></div>
 
-    <div class="leafLetMapMenu"> </div>
-    <div id="leafLetMap"></div>
-</body>
-
-</html>
 <script>
+    var firstAnimalMarkers = [];
+    //var firstAnimalMarkers = [{type:"", marker:null}];
+    //$(document).ready(() => {
     var map = L.map('leafLetMap').setView([45.815399, 15.966568], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+    var _firstAnimalLayer = null;
+    function setFirstAnimalLayer(value) {
+        _firstAnimalLayer = L.layerGroup(value).addTo(map);
+    }
+    function clearFirstAnimal() {
+        _firstAnimalLayer.clearLayers();
+    }
+    function setVisibility(finalMarkers, isVisible) {
+        for (var i = 0; i < finalMarkers.length; i++) {
+            finalMarkers[i].visible = isVisible;
+        }
+    }
+    function setFirstAnimalLayerByVisibility() {
+        console.log("plakanje");
+        console.log(firstAnimalMarkers);
+        if (_firstAnimalLayer != null && firstAnimalMarkers.length>0) {
+            _firstAnimalLayer.clearLayers();    
+        }
+        var filteredList = firstAnimalMarkers.filter((x) => {
+            return x.visible == true
+        });
+        console.log(filteredList);
+        var forLayer = filteredList.map((x) => x.marker);
+        _firstAnimalLayer = L.layerGroup(forLayer).addTo(map);
+    }
+    //});
 </script>
+
+<div class="leafLetMapMenu">
+    @if (Model == null || Model.Count == 0)
+    {
+        <span> No animals to show :( Go find some...</span>
+    }
+    else
+    {
+        @foreach (var item in Model.GroupBy(x => x.AnimalSpecies).Select(y => y.Key))
+        {
+            <div style="text-align: left">
+                <input type="checkbox" id="@item" name="@item" />
+                <label for="@item"> @item</label><br>
+            </div>
+
+            foreach (var animal in @Model.Where(x=> x.AnimalSpecies == item))
+	        {
+<script>
+    var tmpMarker = L.marker([@animal.Latituda ,@animal.Longitude])
+        .bindPopup("@animal.AnimalSpecies @animal.LocalName <br/" + " width=300 height=300> ", { closeOnClick: false, autoClose: false, maxWidth: "auto" });
+        firstAnimalMarkers.push(
+            {
+                type: "@item",
+                marker: tmpMarker,
+                visible: false
+            });
+
+
+
+    $('#@item').change(function () {
+        var currentType = $(this).attr("id");
+        if (this.checked) {
+            var filteredList = firstAnimalMarkers.filter((x) => {
+                return x.type == currentType
+            });
+            setVisibility(filteredList, true);
+            //setFirstAnimalLayer(finalMarkers);
+            setFirstAnimalLayerByVisibility();
+            console.log("jesam");
+        } else {
+            var filteredList = firstAnimalMarkers.filter((x) => {
+                return x.type == currentType
+            });
+            setVisibility(filteredList, false);
+            setFirstAnimalLayerByVisibility();
+        }
+    });
+
+
+</script> 
+	        }
+        }
+    }
+
+</div>
+
+
+

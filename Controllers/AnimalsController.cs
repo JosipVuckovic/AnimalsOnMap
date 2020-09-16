@@ -16,7 +16,7 @@ namespace AnimalsOnMap.Controllers
     public class AnimalsController : Controller
     {
         private readonly AnimalsContext _context;
-        private IAnimalManager _manager;
+        private readonly IAnimalManager _manager;
 
         public AnimalsController(AnimalsContext context, IAnimalManager manager)
         {

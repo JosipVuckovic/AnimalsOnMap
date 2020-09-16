@@ -28,9 +28,9 @@ namespace AnimalsOnMap.Data.Classes
         [Key]
         public int Id { get; set; }
         [Required]
-        [DisplayName("Local name of the animal")]
+        [DisplayName("Animal name")]
         public string LocalName { get; set; }
-        [DisplayName("Latin name of the animal")]
+        [DisplayName("Latin animal name")]
         public string LatinName { get; set; }
         [Required]
         [DisplayName("Species")]        
