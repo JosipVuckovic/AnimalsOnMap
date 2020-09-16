@@ -13,7 +13,7 @@
         {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        
+
     var _firstAnimalLayer = null;
     function setFirstAnimalLayer(value) {
         _firstAnimalLayer = L.layerGroup(value).addTo(map);
@@ -29,8 +29,8 @@
     function setFirstAnimalLayerByVisibility() {
         console.log("plakanje");
         console.log(firstAnimalMarkers);
-        if (_firstAnimalLayer != null && firstAnimalMarkers.length>0) {
-            _firstAnimalLayer.clearLayers();    
+        if (_firstAnimalLayer != null && firstAnimalMarkers.length > 0) {
+            _firstAnimalLayer.clearLayers();
         }
         var filteredList = firstAnimalMarkers.filter((x) => {
             return x.visible == true
@@ -39,14 +39,14 @@
         var forLayer = filteredList.map((x) => x.marker);
         _firstAnimalLayer = L.layerGroup(forLayer).addTo(map);
     }
-    
+
 </script>
 
 <div class="leafLetMapMenu">
     <h6>Found Animals</h6>
     @if (Model == null || Model.Count == 0)
     {
-        <span> No animals to show :( Go find some...</span>
+        <span> No animals to show :(<br /> Go find some...</span>
     }
     else
     {
@@ -57,9 +57,9 @@
                 <label for="@item"> @item</label><br>
             </div>
 
-            foreach (var animal in @Model.Where(x=> x.AnimalSpecies == item))
-	        {
-<script>
+            foreach (var animal in @Model.Where(x => x.AnimalSpecies == item))
+            {
+                <script>
     var tmpMarker = L.marker([@animal.Latituda ,@animal.Longitude])
         .bindPopup("@animal.AnimalSpecies <br> @animal.LocalName <br> @animal.LatinName" , { closeOnClick: false, autoClose: false, maxWidth: "auto" });
         firstAnimalMarkers.push(
@@ -86,8 +86,9 @@
             setFirstAnimalLayerByVisibility();
         }
     });
-</script> 
-	        }
+                </script>
+
+            }
         }
     }
 
