@@ -1,8 +1,4 @@
 ﻿
-@*<head>
-    <link rel="stylesheet" href="~/css/site.min.css" />
-    <script src="~/js/site.min.js"></script>
-</head>*@
 @using Microsoft.CodeAnalysis.CSharp.Syntax
 @model List<AnimalsOnMap.Data.Classes.Animal>
 @{
@@ -12,8 +8,6 @@
 
 <script>
     var firstAnimalMarkers = [];
-    //var firstAnimalMarkers = [{type:"", marker:null}];
-    //$(document).ready(() => {
     var map = L.map('leafLetMap').setView([45.815399, 15.966568], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         {
@@ -45,7 +39,7 @@
         var forLayer = filteredList.map((x) => x.marker);
         _firstAnimalLayer = L.layerGroup(forLayer).addTo(map);
     }
-    //});
+    
 </script>
 
 <div class="leafLetMapMenu">
@@ -74,8 +68,6 @@
                 visible: false
             });
 
-
-
     $('#@item').change(function () {
         var currentType = $(this).attr("id");
         if (this.checked) {
@@ -83,7 +75,6 @@
                 return x.type == currentType
             });
             setVisibility(filteredList, true);
-            //setFirstAnimalLayer(finalMarkers);
             setFirstAnimalLayerByVisibility();
             console.log("jesam");
         } else {
